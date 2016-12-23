@@ -1,0 +1,7 @@
+LIBRARY JwsCloudKsp
+
+EXPORTS
+    DllRegisterServer   PRIVATE
+    DllUnregisterServer PRIVATE
+    GetKeyStorageInterface
+
