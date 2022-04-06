@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hyak.Common;
 using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Azure.KeyVault.WebKey;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.WindowsAzure.Common.Internals;
@@ -54,7 +55,7 @@ namespace CloudKspTst
         static void Main(string[] args)
         {
             KeyBundle keyBundle = null; // The key specification and attributes
-            Secret secret = null;
+            SecretBundle secret = null;
             string keyName = string.Empty;
             string secretName = string.Empty;
 
@@ -148,7 +149,7 @@ namespace CloudKspTst
                     }
                     successfulOperations.Add(operation);
                 }
-                catch (KeyVaultClientException exception)
+                catch (KeyVaultErrorException exception)
                 {
                     // The Key Vault exceptions are logged but not thrown to avoid blocking execution for other commands running in batch
                     Console.Out.WriteLine("Operation failed: {0}", exception.Message);
@@ -263,27 +264,17 @@ namespace CloudKspTst
             keyName = (keyName == string.Empty) ? inputValidator.GetKeyId() : keyName;
 
             var numKeyVersions = 0;
-            var maxResults = 1;
 
             Console.Out.WriteLine("List key versions:---------------");
 
-            var results = keyVaultClient.GetKeyVersionsAsync(vaultAddress, keyName, maxResults).GetAwaiter().GetResult();
+            var results = keyVaultClient.GetKeyVersionsAsync(vaultAddress, keyName, null).GetAwaiter().GetResult();
 
-            if (results != null && results.Value != null)
+            if (results != null)
             {
-                numKeyVersions += results.Value.Count();
-                foreach (var m in results.Value)
-                    Console.Out.WriteLine("\t{0}-{1}", m.Identifier.Name, m.Identifier.Version);
-            }
-
-            while (results != null && !string.IsNullOrWhiteSpace(results.NextLink))
-            {
-                results = keyVaultClient.GetKeyVersionsNextAsync(results.NextLink).GetAwaiter().GetResult();
-                if (results != null && results.Value != null)
+                foreach(var result in results)
                 {
-                    numKeyVersions += results.Value.Count();
-                    foreach (var m in results.Value)
-                        Console.Out.WriteLine("\t{0}-{1}", m.Identifier.Name, m.Identifier.Version);
+                    Console.Out.WriteLine("\t{0}-{1}", result.Identifier.Name, result.Identifier.Version);
+                    numKeyVersions++;
                 }
             }
 
@@ -319,7 +310,7 @@ namespace CloudKspTst
         /// Creates or updates a secret
         /// </summary>
         /// <returns> The created or the updated secret </returns>
-        private static Secret CreateSecret(out string secretName)
+        private static SecretBundle CreateSecret(out string secretName)
         {
             secretName = inputValidator.GetSecretName();
             string secretValue = inputValidator.GetSecretValue();
@@ -341,9 +332,9 @@ namespace CloudKspTst
         /// </summary>
         /// <param name="secretId"> The secret ID </param>
         /// <returns> The created or the updated secret </returns>
-        private static Secret GetSecret(string secretId)
+        private static SecretBundle GetSecret(string secretId)
         {
-            Secret secret;
+            SecretBundle secret;
             string secretVersion = inputValidator.GetSecretVersion();
 
             if (secretVersion != string.Empty)
@@ -370,26 +361,15 @@ namespace CloudKspTst
         {
             var vaultAddress = inputValidator.GetVaultAddress();
             var numSecretsInVault = 0;
-            var maxResults = 1;
 
             Console.Out.WriteLine("List secrets:---------------");
-            var results = keyVaultClient.GetSecretsAsync(vaultAddress, maxResults).GetAwaiter().GetResult();
+            var results = keyVaultClient.GetSecretsAsync(vaultAddress, null).GetAwaiter().GetResult();
 
-            if (results != null && results.Value != null)
+            if (results != null)
             {
-                numSecretsInVault += results.Value.Count();
-                foreach (var m in results.Value)
-                    Console.Out.WriteLine("\t{0}", m.Identifier.Name);
-            }
-
-            while (results != null && !string.IsNullOrWhiteSpace(results.NextLink))
-            {
-                results = keyVaultClient.GetSecretsNextAsync(results.NextLink).GetAwaiter().GetResult();
-                if (results != null && results.Value != null)
+                foreach(var result in results)
                 {
-                    numSecretsInVault += results.Value.Count();
-                    foreach (var m in results.Value)
-                        Console.Out.WriteLine("\t{0}", m.Identifier.Name);
+                    Console.Out.WriteLine("\t{0}", result.Identifier.Name);
                 }
             }
 
@@ -401,7 +381,7 @@ namespace CloudKspTst
         /// </summary>
         /// <param name="secretId"> The secret ID</param>
         /// <returns> The deleted secret </returns>
-        private static Secret DeleteSecret(string secretName)
+        private static SecretBundle DeleteSecret(string secretName)
         {
             // If the secret is not initialized get the secret Id from args
             var vaultAddress = inputValidator.GetVaultAddress();
@@ -428,7 +408,7 @@ namespace CloudKspTst
             // Get a backup of the key and cache its backup value
             var backupKeyValue = keyVaultClient.BackupKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
             Console.Out.WriteLine(string.Format(
-                "The backup key value contains {0} bytes.\nTo restore it into a key vault this value should be provided!", backupKeyValue.Length));
+                "The backup key value contains {0} bytes.\nTo restore it into a key vault this value should be provided!", backupKeyValue.Value.Length));
 
             // Get the vault address from args or use the default one
             var newVaultAddress = inputValidator.GetVaultAddress();
@@ -437,7 +417,7 @@ namespace CloudKspTst
             keyVaultClient.DeleteKeyAsync(vaultAddress, keyName).GetAwaiter().GetResult();
 
             // Restore the backed up value into the vault
-            var restoredKey = keyVaultClient.RestoreKeyAsync(newVaultAddress, backupKeyValue).GetAwaiter().GetResult();
+            var restoredKey = keyVaultClient.RestoreKeyAsync(newVaultAddress, backupKeyValue.Value).GetAwaiter().GetResult();
 
             Console.Out.WriteLine("Restored key:---------------");
             PrintoutKey(restoredKey);
@@ -635,7 +615,7 @@ namespace CloudKspTst
 
             var notBeforeStr = keyBundle.Attributes.NotBefore.HasValue
                 ? keyBundle.Attributes.NotBefore.ToString()
-                : UnixEpoch.EpochDate.ToString();
+                : "";
 
             Console.Out.WriteLine("Key attributes: \n\tIs the key enabled: {0}\n\tExpiry date: {1}\n\tEnable date: {2}",
                 keyBundle.Attributes.Enabled, expiryDateStr, notBeforeStr);
@@ -645,7 +625,7 @@ namespace CloudKspTst
         /// Prints out secret values
         /// </summary>
         /// <param name="secret"> secret </param>
-        private static void PrintoutSecret(Secret secret)
+        private static void PrintoutSecret(SecretBundle secret)
         {
             Console.Out.WriteLine("\n\tSecret ID: {0}\n\tSecret Value: {1}",
                 secret.Id, secret.Value);
@@ -656,7 +636,7 @@ namespace CloudKspTst
 
             var notBeforeStr = secret.Attributes.NotBefore.HasValue
                 ? secret.Attributes.NotBefore.ToString()
-                : UnixEpoch.EpochDate.ToString();
+                : "";
 
             Console.Out.WriteLine("Secret attributes: \n\tIs the key enabled: {0}\n\tExpiry date: {1}\n\tEnable date: {2}\n\tContent type: {3}",
                 secret.Attributes.Enabled, expiryDateStr, notBeforeStr, secret.ContentType);
@@ -668,7 +648,7 @@ namespace CloudKspTst
         /// Prints out the tags for a key/secret
         /// </summary>
         /// <param name="tags"></param>
-        private static void PrintoutTags(Dictionary<string, string> tags)
+        private static void PrintoutTags(IDictionary<string, string> tags)
         {
             if (tags != null)
             {
@@ -1060,8 +1040,8 @@ namespace CloudKspTst
                 Attributes = new KeyAttributes()
                 {
                     Enabled = true,
-                    Expires = UnixEpoch.FromUnixTime(int.MaxValue),
-                    NotBefore = UnixEpoch.FromUnixTime(0),
+                    Expires = DateTime.MaxValue,
+                    NotBefore = DateTime.Now
                 }
             };
 
@@ -1096,8 +1076,8 @@ namespace CloudKspTst
                 Attributes = new KeyAttributes()
                 {
                     Enabled = true,
-                    Expires = UnixEpoch.FromUnixTime(int.MaxValue),
-                    NotBefore = UnixEpoch.FromUnixTime(0),
+                    Expires = DateTime.MaxValue,
+                    NotBefore = DateTime.Now,
                 }
             };
 

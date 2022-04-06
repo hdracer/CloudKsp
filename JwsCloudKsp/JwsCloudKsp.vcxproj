@@ -26,32 +26,32 @@
     <SccProvider>SAK</SccProvider>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>JwsCloudKsp</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -93,14 +93,14 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JWSCLOUDKSP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalUsingDirectories>$(OutDir)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Include;$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CPDK\Include;$(OutDir);..\CloudKspLibMg\bin\Debug</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>JwsCloudKsp.def</ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Lib\win8\$(Platform);$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\CPDK\lib\x64;$(OutDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>crypt32.lib;bcrypt_provider.lib;ncrypt_provider.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -112,14 +112,14 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;JWSCLOUDKSP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalUsingDirectories>$(OutDir)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Include;$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CPDK\Include;$(OutDir);..\CloudKspLibMg\bin\Debug</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>JwsCloudKsp.def</ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Lib\win8\$(Platform);$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\CPDK\lib\x64;$(OutDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>crypt32.lib;bcrypt_provider.lib;ncrypt_provider.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -133,7 +133,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;JWSCLOUDKSP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalUsingDirectories>$(OutDir)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Include;$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CPDK\Include;$(OutDir);..\CloudKspLibMg\bin\Debug</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -142,7 +142,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>JwsCloudKsp.def</ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Lib\win8\$(Platform);$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\CPDK\lib\x64;$(OutDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>crypt32.lib;bcrypt_provider.lib;ncrypt_provider.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -156,7 +156,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;JWSCLOUDKSP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalUsingDirectories>$(OutDir)</AdditionalUsingDirectories>
-      <AdditionalIncludeDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Include;$(OutDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CPDK\Include;$(OutDir);..\CloudKspLibMg\bin\Debug</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -165,7 +165,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>JwsCloudKsp.def</ModuleDefinitionFile>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\Windows Kits\8.0\Cryptographic Provider Development Kit\Lib\win8\$(Platform);$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\CPDK\lib\x64;$(OutDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>crypt32.lib;bcrypt_provider.lib;ncrypt_provider.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

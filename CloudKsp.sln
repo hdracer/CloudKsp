@@ -1,13 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudKspTst", "CloudKspTst\CloudKspTst.csproj", "{D00841A1-99B4-4F31-8AE3-D61CA2EC6042}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudKspLibMg", "CloudKspLibMg\CloudKspLibMg.csproj", "{9026A6BD-664C-4E57-B6F1-AF5F73F368F7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JwsCloudKsp", "JwsCloudKsp\JwsCloudKsp.vcxproj", "{FD30D36D-DA86-472D-9515-DC95AC2D6611}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9026A6BD-664C-4E57-B6F1-AF5F73F368F7} = {9026A6BD-664C-4E57-B6F1-AF5F73F368F7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CloudKspTstNat", "CloudKspTstNat\CloudKspTstNat.vcxproj", "{48054F7B-2B28-44AA-9692-FF13302F84DE}"
 EndProject
@@ -45,7 +48,8 @@ Global
 		{9026A6BD-664C-4E57-B6F1-AF5F73F368F7}.Release|x64.Build.0 = Release|Any CPU
 		{9026A6BD-664C-4E57-B6F1-AF5F73F368F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{9026A6BD-664C-4E57-B6F1-AF5F73F368F7}.Release|x86.Build.0 = Release|Any CPU
-		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Debug|Any CPU.Build.0 = Debug|x64
 		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Debug|x64.ActiveCfg = Debug|x64
 		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Debug|x64.Build.0 = Debug|x64
 		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Debug|x86.ActiveCfg = Debug|Win32
@@ -55,7 +59,8 @@ Global
 		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Release|x64.Build.0 = Release|x64
 		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Release|x86.ActiveCfg = Release|Win32
 		{FD30D36D-DA86-472D-9515-DC95AC2D6611}.Release|x86.Build.0 = Release|Win32
-		{48054F7B-2B28-44AA-9692-FF13302F84DE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{48054F7B-2B28-44AA-9692-FF13302F84DE}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{48054F7B-2B28-44AA-9692-FF13302F84DE}.Debug|Any CPU.Build.0 = Debug|x64
 		{48054F7B-2B28-44AA-9692-FF13302F84DE}.Debug|x64.ActiveCfg = Debug|x64
 		{48054F7B-2B28-44AA-9692-FF13302F84DE}.Debug|x64.Build.0 = Debug|x64
 		{48054F7B-2B28-44AA-9692-FF13302F84DE}.Debug|x86.ActiveCfg = Debug|Win32
@@ -69,22 +74,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://jwsecurecode.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = CloudKspTst\\CloudKspTst.csproj
-		SccProjectName1 = CloudKspTst
-		SccLocalPath1 = CloudKspTst
-		SccProjectUniqueName2 = CloudKspLibMg\\CloudKspLibMg.csproj
-		SccProjectName2 = CloudKspLibMg
-		SccLocalPath2 = CloudKspLibMg
-		SccProjectUniqueName3 = JwsCloudKsp\\JwsCloudKsp.vcxproj
-		SccProjectName3 = JwsCloudKsp
-		SccLocalPath3 = JwsCloudKsp
-		SccProjectUniqueName4 = CloudKspTstNat\\CloudKspTstNat.vcxproj
-		SccProjectName4 = CloudKspTstNat
-		SccLocalPath4 = CloudKspTstNat
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {668B1AA6-5D1E-49A2-BF10-9B9B8F79ACA0}
 	EndGlobalSection
 EndGlobal
